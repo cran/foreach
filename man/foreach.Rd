@@ -108,6 +108,13 @@ return a value (a list, by default), rather than to cause side-effects.
 This faciliates parallelization, but looks more natural to people that
 prefer \code{for} loops to \code{lapply}.
 
+Parallel computation depends upon a \emph{parallel backend} that must be 
+registered before performing the computation. The parallel backends available
+will be system-specific, but include \code{doNWS}, which uses the NetWorkSpaces
+parallelization system, \code{doMC}, which uses the \code{multicore} package,
+and \code{doSNOW}. Each parallel backend has a specific registration function,
+such as \code{registerDoNWS} or \code{registerDoSNOW}.
+
 The \code{times} function is a simple convenience function that calls
 \code{foreach}.  It is useful for evaluating an \code{R} expression multiple
 times when there are no varying arguments.  This can be convenient for
@@ -131,6 +138,8 @@ foreach(i=1:ncol(m), .combine=c) \%do\%
 
 # normalize the rows of a matrix in parallel, with parenthesis used to
 # force proper operator precedence
+# Need to register a parallel backend before this example will run
+# in parallel
 foreach(i=1:nrow(m), .combine=rbind) \%dopar\%
   (m[i,] / mean(m[i,]))
 
