@@ -136,11 +136,10 @@ ivector <- function(x, chunksize) {
     x[r]
   }
 
-  structure(list(nextElem=nextEl), class=c('ivector', 'iter'))
+  obj <- list(nextElem=nextEl)
+  class(obj) <- c('abstractiter', 'iter')
+  obj
 }
-
-# Define the nextElem method for the "ivector" iterator
-nextElem.ivector <- function(obj) obj$nextElem()
 
 # another filtering example
 set.seed(17)

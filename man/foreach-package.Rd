@@ -21,6 +21,19 @@ Further information is available in the following help topics:
 \code{\%dopar\%} \tab Execute the R expression using the currently registered backend\cr
 }
 
+To see a tutorial introduction to the foreach package,
+use \code{vignette("foreach")}.
+
+To see a demo of foreach computing the sinc function,
+use \code{demo(sincSEQ)}.
+
+Some examples (in addition to those in the help pages) are included in
+the ``examples'' directory of the foreach package.  To list the files in
+the examples directory,
+use \code{list.files(system.file("examples", package="foreach"))}.
+To run the bootstrap example, use
+\code{source(system.file("examples", "bootseq.R", package="foreach"))}.
+
 For a complete list of functions with individual help pages,
 use \code{library(help="foreach")}.
 }

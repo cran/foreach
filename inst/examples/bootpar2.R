@@ -6,15 +6,9 @@ x <- iris[which(iris[,5] != "setosa"), c(1,5)]
 trials <- 10000
 nwsopts <- list(chunkSize=150)
 
-# using this "final" function on a list of vectors,
-# rather than using cbind as the "combine" function,
-# seems to run a little bit slower.  So the bootpar.R
-# version is prefered.
-final <- function(a) {
-  x <- unlist(a)
-  dim(x) <- c(2, length(a))
-  x
-}
+# Can use the following "final" function instead of
+# using cbind as the "combine" function.
+final <- function(a) do.call('cbind', a)
 
 print(system.time(
 r <- foreach(icount(trials), .final=final, .options.nws=nwsopts) %dopar% {

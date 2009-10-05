@@ -13,10 +13,10 @@ iquery <- function(con, statement, ..., n=1) {
     }
     r
   }
-  structure(list(nextElem=nextEl), class=c('iquery', 'iter'))
+  obj <- list(nextElem=nextEl)
+  class(obj) <- c('abstractiter', 'iter')
+  obj
 }
-
-nextElem.iquery <- function(obj) obj$nextElem()
 
 # create a SQLite instance and create one connection.
 m <- dbDriver('SQLite')

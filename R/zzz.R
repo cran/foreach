@@ -15,7 +15,9 @@
 #
 
 .onLoad <- function(lib, pkg) {
-  cat('foreach: simple, scalable parallel programming from REvolution Computing\n',
-      'Use REvolution R for scalability, fault tolerance and more.\n',
-      'http://www.revolution-computing.com\n', sep='')
+  if (interactive()) {
+    cat('foreach: simple, scalable parallel programming from REvolution Computing\n',
+        'Use REvolution R for scalability, fault tolerance and more.\n',
+        'http://www.revolution-computing.com\n', sep='')
+  }
 }

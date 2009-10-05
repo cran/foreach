@@ -4,17 +4,22 @@ library(foreach)
 library(randomForest)
 
 # generate the inputs
-x <- matrix(runif(500), 100)
-y <- gl(2, 50)
+nr <- 1000
+x <- matrix(runif(100000), nr)
+y <- gl(2, nr/2)
 
 # split the total number of trees by the number of parallel execution workers
 nw <- getDoParWorkers()
 cat(sprintf('Running with %d worker(s)\n', nw))
-vntree <- rep(ceiling(1000 / nw), nw)  # this can give some extra trees
+it <- idiv(1000, chunks=nw)
 
 # run the randomForest jobs, and combine the results
-rf <- foreach(ntree=vntree, .combine=combine, .packages='randomForest') %dopar%
-  randomForest(x, y, ntree=ntree)
+print(system.time({
+rf <- foreach(ntree=it, .combine=combine, .multicombine=TRUE,
+              .inorder=FALSE, .packages='randomForest') %dopar% {
+  randomForest(x, y, ntree=ntree, importance=TRUE)
+}
+}))
 
 # print the result
 print(rf)

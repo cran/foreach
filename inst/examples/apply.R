@@ -124,9 +124,10 @@ iblkcol <- function(a, chunks) {
     a[,r, drop=FALSE]
   }
 
-  structure(list(nextElem=nextEl), class=c('iblkcol', 'iter'))
+  obj <- list(nextElem=nextEl)
+  class(obj) <- c('abstractiter', 'iter')
+  obj
 }
-nextElem.iblkcol <- function(obj) obj$nextElem()
 
 # Simple test program for applyPar
 library(foreach)

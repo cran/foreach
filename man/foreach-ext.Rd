@@ -1,6 +1,7 @@
 \name{foreach-ext}
 \alias{foreach-ext}
 \alias{makeAccum}
+\alias{accumulate}
 \alias{getexports}
 \alias{getResult}
 \alias{getErrorValue}
@@ -13,6 +14,7 @@ the \code{foreach} package.
 }
 \usage{
 makeAccum(it)
+accumulate(obj, result, tag, ...)
 getexports(ex, e, env, good=character(0), bad=character(0))
 getResult(obj, \dots)
 getErrorValue(obj, \dots)
@@ -26,6 +28,8 @@ getErrorIndex(obj, \dots)
   \item{good}{names of symbols that are being exported.}
   \item{bad}{names of symbols that are not being exported.}
   \item{obj}{foreach iterator object.}
+  \item{result}{task result to accumulate.}
+  \item{tag}{tag of task result to accumulate.}
   \item{\dots}{unused.}
 }
 \note{

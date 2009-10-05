@@ -1,0 +1,345 @@
+% \VignetteIndexEntry{Nesting Foreach Loops}
+% \VignetteDepends{foreach}
+% \VignettePackage{foreach}
+\documentclass[12pt]{article}
+\usepackage{amsmath}
+\usepackage[pdftex]{graphicx}
+\usepackage{color}
+\usepackage{xspace}
+\usepackage{fancyvrb}
+\usepackage{fancyhdr}
+    \usepackage[
+         colorlinks=true,
+         linkcolor=blue,
+         citecolor=blue,
+         urlcolor=blue]
+         {hyperref}
+         \usepackage{lscape}
+
+\usepackage{Sweave}
+\usepackage{float}
+
+\floatstyle{plain}
+\newfloat{example}{thp}{lop}
+\floatname{example}{Example}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% define new colors for use
+\definecolor{darkgreen}{rgb}{0,0.6,0}
+\definecolor{darkred}{rgb}{0.6,0.0,0}
+\definecolor{lightbrown}{rgb}{1,0.9,0.8}
+\definecolor{brown}{rgb}{0.6,0.3,0.3}
+\definecolor{darkblue}{rgb}{0,0,0.8}
+\definecolor{darkmagenta}{rgb}{0.5,0,0.5}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\bld}[1]{\mbox{\boldmath $#1$}}
+\newcommand{\shell}[1]{\mbox{$#1$}}
+\renewcommand{\vec}[1]{\mbox{\bf {#1}}}
+
+\newcommand{\ReallySmallSpacing}{\renewcommand{\baselinestretch}{.6}\Large\normalsize}
+\newcommand{\SmallSpacing}{\renewcommand{\baselinestretch}{1.1}\Large\normalsize}
+
+\newcommand{\halfs}{\frac{1}{2}}
+
+\setlength{\oddsidemargin}{-.25 truein}
+\setlength{\evensidemargin}{0truein}
+\setlength{\topmargin}{-0.2truein}
+\setlength{\textwidth}{7 truein}
+\setlength{\textheight}{8.5 truein}
+\setlength{\parindent}{0.20truein}
+\setlength{\parskip}{0.10truein}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagestyle{fancy}
+\lhead{}
+\chead{Nesting {\tt Foreach} Loops}
+\rhead{}
+\lfoot{}
+\cfoot{}
+\rfoot{\thepage}
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\footrulewidth}{1pt}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{Nesting {\tt Foreach} Loops}
+\author{Steve Weston \\ steve@revolution-computing.com}
+
+
+\begin{document}
+
+\maketitle
+
+\thispagestyle{empty}
+
+\section{Introduction}
+
+<<loadLibs,echo=FALSE,results=hide>>=
+library(foreach)
+@
+
+The \texttt{foreach} package provides a looping construct for executing
+R code repeatedly.  It is similar to the standard \texttt{for} loop,
+which makes it easy to convert a \texttt{for} loop to a \texttt{foreach}
+loop.  Unlike many parallel programming packages for R, \texttt{foreach}
+doesn't require the body of the \texttt{for} loop to be turned into a
+function.  \texttt{foreach} differs from a \texttt{for} loop in that its
+return is a list of values, whereas a \texttt{for} loop has no value and
+uses side effects to convey its result.  Because of this,
+\texttt{foreach} loops have a few advantages over \texttt{for} loops
+when the purpose of the loop is to create a data structure such as a
+vector, list, or matrix: First, there is less code duplication, and
+hence, less chance for an error because the initialization of the vector
+or matrix is unnecessary.  Second, a \texttt{foreach} loop may be easily
+parallelized by changing only a single keyword.
+
+So what should you do if you have a nested \texttt{for} loop?  Many
+compute intensive algorithms use nested \texttt{for} loops, so this is
+an important question, and there are some features in the
+\texttt{foreach} package that help with this issue.
+
+Let's say that we want to perform a Monte Carlo simulation, using a
+function called \texttt{sim}.  The \texttt{sim} function takes two
+arguments, and we want to call it with all combinations of values that
+are stored in the vectors \texttt{avec} and \texttt{bvec}.  The
+following doubly-nested \texttt{for} loop does that.  For testing
+purposes, the \texttt{sim} function is defined to return $10 a + b$:
+
+<<init1,echo=FALSE,results=hide>>=
+sim <- function(a, b) 10 * a + b
+avec <- 1:2
+bvec <- 1:4
+@
+
+\begin{example}[h]
+<<for1>>=
+x <- matrix(0, length(avec), length(bvec))
+for (j in 1:length(bvec)) {
+  for (i in 1:length(avec)) {
+    x[i,j] <- sim(avec[i], bvec[j])
+  }
+}
+x
+@
+\caption{Doubly-nested for loop}
+\end{example}
+
+In this case, it makes sense to store the results in a matrix, so we
+create one called \texttt{x}, and assign the return value of
+\texttt{sim} into the appropriate element of \texttt{x} each time
+through the inner loop.
+
+When converting this to use \texttt{foreach}, we avoid the use of
+assignments, and instead return an appropriate object from
+\texttt{foreach}.\footnote{Actually, it is the \texttt{\%do\%} or
+\texttt{\%dopar\%} operator that is returning the value, but it's less
+confusing and more natural to pretend that \texttt{foreach} is returning
+the value, especially since the \texttt{foreach} options control the
+value that is returned from \texttt{\%do\%} and \texttt{\%dopar\%}.} By
+default, \texttt{foreach} returns the values in a list, but we can
+change that with the \texttt{.combine} option.  The natural solution is
+to have the inner \texttt{foreach} return a vector using the standard
+\texttt{c} function, and the outer \texttt{foreach} return a matrix by
+concatenating those vectors using the \texttt{cbind} function.  Here's
+one way to do that:\footnote{Note my use of braces.  They aren't
+actually necessary for the inner \texttt{foreach} loop, but they needed
+for the outer \texttt{foreach} loop to get the correct operator
+precedence.  \texttt{\%do\%} is a binary operator whose second argument
+(or right-hand argument) is an R expression, and the R expression that
+I'm trying to execute is the entire inner \texttt{foreach} loop.  You
+can also use parentheses to get the correct precedence, but braces look
+more natural since \texttt{foreach} pretends to be a \texttt{for} loop.}
+
+\begin{example}[h]
+<<foreach1>>=
+x <-
+  foreach(b=bvec, .combine='cbind') %do% {
+    foreach(a=avec, .combine='c') %do% {
+      sim(a, b)
+    }
+  }
+x
+@
+\caption{Doubly-nested foreach loop}
+\end{example}
+
+This is actually cleaner than the original \texttt{for} loop version,
+since \texttt{foreach} is intended to return a value, as we're doing in
+this example.
+
+To execute this in parallel, all we have to do is change the outer
+\texttt{\%do\%} into a \texttt{\%dopar\%}:\footnote{I also had to use
+the \texttt{.packages} option to specify that the \texttt{foreach}
+package was needed to execute the body of the \texttt{foreach}.}
+
+\begin{example}[h]
+<<foreach2>>=
+x <-
+  foreach(b=bvec, .combine='cbind', .packages='foreach') %dopar% {
+    foreach(a=avec, .combine='c') %do% {
+      sim(a, b)
+    }
+  }
+x
+@
+\caption{Parallel doubly-nested foreach loop}
+\end{example}
+
+\section{Task Granularity}
+
+An experienced R programmer will very likely ask why the inner
+\texttt{foreach} loop is used in my last example.  Wouldn't it be more
+efficient to use the \texttt{sapply} function in its place?
+
+\begin{example}[h]
+<<foreach3>>=
+x <-
+  foreach(b=bvec, .combine='cbind') %dopar% {
+    sapply(avec, sim, b)
+  }
+x
+@
+\caption{Parallel singly-nested foreach loop}
+\label{e:sapply}
+\end{example}
+
+My answer would be yes, I would use \texttt{sapply}, as in example
+\ref{e:sapply}.  In this case, the \texttt{sapply} makes a very simple
+replacement for the inner \texttt{foreach} loop, and will certainly run
+somewhat faster.  But it's possible that neither example is ideal.  The
+reason for that revolves around the concept of task granularity.
+
+Parallel computing is all about executing tasks in parallel.
+With \texttt{foreach}, the task is the body of the loop, and so in this
+case, the task is the execution of the \texttt{sim} function.  If each
+task takes a relatively short time to execute, we say that
+we have fine grained tasks.  If each task takes a long time to
+execute, we say that we have coarse grained tasks.  Generally speaking,
+coarse grained tasks are better, since they are easier to execute
+efficiently.  If a task takes less than a second to execute, you can
+run into problems executing efficiently with \texttt{foreach}, which was
+designed for coarse grained parallelism.
+
+Of course, if the body of your \texttt{for} loop executes in a
+millisecond, why would you want to run the loop in parallel?  The
+obvious answer is that you have a lot of millisecond tasks to execute.
+A hundred thousand such tasks will take at least 100 seconds to
+execute, and that's a problem that you might want to execute
+in parallel.
+
+\section{Which loop to parallelize?}
+
+Now let's return to our example.  If the \texttt{sim} function executes
+in a millisecond, then we wouldn't want to execute it in parallel.  But
+the body of example three is using \texttt{sapply} to execute
+\texttt{sim} multiple times.  If the length of \texttt{avec} is 10
+million, and the length of \texttt{bvec} is a thousand, then we're in
+great shape.  It would take around two hours to run this sequentially,
+but we can probably run this efficiently on a two core machine, or
+a two hundred node cluster.  That's because we have a thousand
+reasonably sized tasks to execute.
+
+Unfortunately, life isn't always easy, especially when computers are
+involved.  If the \texttt{avec} vector is short, the tasks could still be
+too fine grained, making them run inefficiently.  And if \texttt{bvec}
+is much smaller than \texttt{avec}, you could have only a few very
+long running tasks, limiting the parallelism of the job.
+
+This seems like a rather bleak situation: even though you have a lot of
+completely independent tasks and lots of CPU's to execute them on,
+unless you're lucky and get a good balance between the number and size
+of the tasks, you could still end up waiting a long time for the work to
+get done.
+
+\section{Singly-nested loops}
+
+Nested \texttt{for} loops seem like a great opportunity for parallelism,
+because where you have nested loops, you often have many tasks that can
+be executed in parallel.  But as we've seen, the nesting can make it
+more difficult to get a good balance between the size and number of the
+tasks.  With a single \texttt{for} loop, you can still have this kind of
+balance problem, of course.  The standard problem is that the tasks are
+too fine grained, and the standard solution is to batch many tasks
+together into large tasks.  I call this task chunking, because you put
+multiple tasks together into a larger task chunk.
+
+The \texttt{doNWS} parallel backend has a \texttt{chunkSize} option that
+allows you to specify the number of tasks to batch together.  It's a
+backend specific option, so it is specified via the \texttt{foreach}
+\texttt{.options.nws} option.  Here's how it can be used in a
+singly-nested \texttt{foreach} loop:
+
+\begin{example}[h]
+<<foreach4>>=
+nwsopts <- list(chunkSize=100)
+x <-
+  foreach(a=avec, .combine='c', .options.nws=nwsopts) %dopar%
+    sim(a, 1)
+x
+@
+\caption{Singly-nested for loop}
+\end{example}
+
+The other problem that you could run into is that the tasks are too
+big compared to the number of tasks.  But the only solution to that
+problem is to attempt decompose the task further into subtasks.  If
+that's your problem, then all I can say is "Good Luck".
+
+\section{The \texttt{\%:\%} Operator}
+
+Now let's return to nested loops.  One solution to our problem is to
+convert the nested loops into a single loop of tasks that can all be
+executed in parallel.  After all, that's what's frustrating about
+example one: all the tasks are completely independent, so we should be
+able to execute them in parallel.  But the nested loops don't express
+that.  The inner loop has to completely finish before you can go on to
+the next iteration of the outer loop.  But that isn't necessary in this
+case.  If we had a way to write a nested loop that represented a single
+stream of tasks, then we wouldn't have to worry about problems caused by
+an imbalance between the number of iterations between the different
+loops.
+
+This is what the \texttt{foreach} nesting operator, \texttt{\%:\%}, was
+designed for.  It allows you to create one stream of tasks from multiple
+\texttt{foreach} loops:\footnote{Note that \texttt{.option.nws} can
+be specified either in the outer or inner \texttt{foreach}, but it
+shouldn't be used in both.}
+
+\begin{example}[h]
+<<foreach6>>=
+x <-
+  foreach(b=bvec, .combine='cbind', .options.nws=nwsopts) %:%
+    foreach(a=avec, .combine='c') %dopar%
+      sim(a, b)
+x
+@
+\caption{The \%:\% operator}
+\end{example}
+
+Note that there is now only one \texttt{\%dopar\%} operator, not two.
+There's no question of which loop to parallelize, because it's really
+only one loop that's pretending to be two.  Or rather, it's one loop
+that still gives you the ability to handle the tasks and results in a
+multidimensional way, so you can still use different combine function for
+the different loops, for example.
+
+\section{A more complicated example}
+
+[todo]
+
+\section{Conclusion}
+
+Nested \texttt{for} loops are a common construct, and are often
+the most time consuming part of R scripts, so they are a prime candidate
+for parallelization.  The standard advice is to parallelize the outer
+loop, and vectorize the inner loop.  But as we've seen, that often leads
+to suboptimal performance due to an imbalance between the size and
+number of tasks that need to be executed.  By using the \texttt{\%:\%}
+operator with \texttt{foreach}, and by using chunking techniques, many
+of those problems can be overcome.  The resulting code is often clearer
+and more readable than the original R code, since \texttt{foreach} was
+designed to deal with exactly this kind of problem.
+
+\end{document}

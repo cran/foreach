@@ -13,12 +13,10 @@ iquery <- function(con, statement, ..., n=1) {
     }
     d
   }
-  structure(list(nextElem=nextEl), class=c('iquery', 'iter'))
+  obj <- list(nextElem=nextEl)
+  class(obj) <- c('abstractiter', 'iter')
+  obj
 }
-
-# Define a "nextElem" method for our new iterator class.
-# This is the only method needed by the foreach package.
-nextElem.iquery <- function(obj) obj$nextElem()
 
 # Create an SQLite instance.
 m <- dbDriver('SQLite')

@@ -11,11 +11,10 @@ mtryiter <- function(from, to, stepFactor=2) {
     from <<- ceiling(from * stepFactor)
     i
   }
-  structure(list(nextElem=nextEl), class=c('mtryiter', 'iter'))
+  obj <- list(nextElem=nextEl)
+  class(obj) <- c('abstractiter', 'iter')
+  obj
 }
-
-# this defines the nextElem method for out iterator
-nextElem.mtryiter <- function(obj) obj$nextElem()
 
 # vector of ntree values that we're interested in
 vntree <- c(25, 50, 100, 200, 500, 1000)
@@ -27,8 +26,10 @@ tune <- function(x, y, ntree=vntree, mtry=NULL, keep.forest=FALSE, ...) {
   else
     function(a, b) rbind(a, data.frame(ntree=ntree, mtry=b$mtry, error=b$mse[ntree]))
 
-  foreach(mtry=mtryiter(1, ncol(x)), .combine=comb, .init=NULL, .packages='randomForest') %do%
+  foreach(mtry=mtryiter(1, ncol(x)), .combine=comb, .init=NULL,
+          .packages='randomForest') %dopar% {
     randomForest(x, y, ntree=max(ntree), mtry=mtry, keep.forest=FALSE, ...)
+  }
 }
 
 # generate the inputs
