@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008-2009, REvolution Computing, Inc.
+# Copyright (c) 2008-2010 Revolution Analytics
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
 
 .onLoad <- function(lib, pkg) {
   if (interactive()) {
-    cat('foreach: simple, scalable parallel programming from REvolution Computing\n',
-        'Use REvolution R for scalability, fault tolerance and more.\n',
-        'http://www.revolution-computing.com\n', sep='')
+    packageStartupMessage('foreach: simple, scalable parallel programming from Revolution Analytics\n',
+        'Use Revolution R for scalability, fault tolerance and more.\n',
+        'http://www.revolutionanalytics.com', domain=NA, appendLF=TRUE)
   }
 }

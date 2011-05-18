@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008-2009, REvolution Computing, Inc.
+# Copyright (c) 2008-2010 Revolution Analytics
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.

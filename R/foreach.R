@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008-2009, REvolution Computing, Inc.
+# Copyright (c) 2008-2010 Revolution Analytics
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -248,8 +248,10 @@ accumulate.iforeach <- function(obj, result, tag, ...) {
 
   # make sure we always have trailing NA's
   blen <- length(obj$state$buffered)
-  if (ibuf >= blen)
+  while (ibuf >= blen) {
     length(obj$state$buffered) <- 2 * blen
+    blen <- length(obj$state$buffered)
+  }
 
   obj$state$buffered[ibuf] <-
     if (inherits(result, 'error') && obj$errorHandling %in% c('stop', 'remove'))

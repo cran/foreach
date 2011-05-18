@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008-2009, REvolution Computing, Inc.
+# Copyright (c) 2008-2010 Revolution Analytics
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -95,6 +95,12 @@ getDoPar <- function() {
   e$fun(obj, substitute(ex), parent.frame(), e$data)
 }
 
+comp <- if (getRversion() < "2.13.0") {
+  function(expr, ...) expr
+} else {
+  compiler::compile
+}
+
 doSEQ <- function(obj, expr, envir, data) {
   # note that the "data" argument isn't used
   if (!inherits(obj, 'foreach'))
@@ -105,6 +111,9 @@ doSEQ <- function(obj, expr, envir, data) {
 
   for (p in obj$packages)
     library(p, character.only=TRUE)
+
+  # compile the expression if we're using R 2.13.0 or greater
+  xpr <- comp(expr, env=envir, options=list(suppressUndefined=TRUE))
 
   i <- 1
   tryCatch({
@@ -121,7 +130,7 @@ doSEQ <- function(obj, expr, envir, data) {
         assign(a, args[[a]], pos=envir, inherits=FALSE)
 
       # evaluate the expression
-      r <- tryCatch(eval(expr, envir=envir), error=function(e) e)
+      r <- tryCatch(eval(xpr, envir=envir), error=function(e) e)
       if (obj$verbose) {
         cat('result of evaluating expression:\n')
         print(r)
