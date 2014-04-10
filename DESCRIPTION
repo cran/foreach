@@ -1,7 +1,7 @@
 Package: foreach
 Type: Package
 Title: Foreach looping construct for R
-Version: 1.4.1
+Version: 1.4.2
 Author: Revolution Analytics, Steve Weston
 Maintainer: Revolution Analytics <packages@revolutionanalytics.com>
 Description: Support for the foreach looping construct.  Foreach is an
@@ -9,8 +9,8 @@ Description: Support for the foreach looping construct.  Foreach is an
         without the use of an explicit loop counter.  This package in
         particular is intended to be used for its return value, rather
         than for its side effects.  In that sense, it is similar to the
-        standard lapply function, but doesn't require the evaluation of
-        a function.  Using foreach without side effects also
+        standard lapply function, but doesn't require the evaluation
+        of a function.  Using foreach without side effects also
         facilitates executing the loop in parallel.
 Depends: R (>= 2.5.0)
 Imports: codetools, utils, iterators
@@ -19,8 +19,8 @@ Enhances: compiler, doMC, RUnit, doParallel
 License: Apache License (== 2.0)
 Repository: CRAN
 Repository/R-Forge/Project: foreach
-Repository/R-Forge/Revision: 24
-Repository/R-Forge/DateTimeStamp: 2013-05-29 21:06:49
-Date/Publication: 2013-06-06 19:39:33
-Packaged: 2013-05-31 15:37:59 UTC; rforge
+Repository/R-Forge/Revision: 25
+Repository/R-Forge/DateTimeStamp: 2014-04-10 18:54:16
+Date/Publication: 2014-04-11 07:52:42
+Packaged: 2014-04-10 20:16:29 UTC; rforge
 NeedsCompilation: no
