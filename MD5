@@ -1,4 +1,4 @@
-a42f52bb7b8fe88b9df566a0923667b6 *DESCRIPTION
+06a2f49edb30b27a8b6446eb5f5a3b3c *DESCRIPTION
 40a625f9c00c16cae197a17ae8cedc42 *NAMESPACE
 676572e5505286cf2f81facfd3f08f71 *NEWS
 a7bd1616106d04fd03a94885b01042ff *R/acc.R
@@ -6,15 +6,15 @@ afaad4ca2db59c1288057fc4313011e1 *R/do.R
 bf0e759668c8c949394fac6663d82b65 *R/foreach.R
 9491666ee248849d5d62f4b6d3bae332 *R/getsyms.R
 14e3d76b3f88d4c126c5c95592ad660c *R/times.R
-62c3b5a350bc1ff83aa0ed5b8fcc5075 *build/vignette.rds
+7b458ab78140c56d1469e4f6c8798ea8 *build/vignette.rds
 caa28a573b448cbd60f22052c2bca7a3 *demo/00Index
 515798525e9e08e68a66ab24df3d17a0 *demo/sincSEQ.R
-114454e06e155812fbd7de0001ef5dc2 *inst/doc/foreach.R
+407e0dd1205a9dca9bce62d7e2358671 *inst/doc/foreach.R
 f8ac22a80a28c04f29ae2a88686d07b7 *inst/doc/foreach.Rnw
-a2b2e691c72df3fbd217ce0a64e688e2 *inst/doc/foreach.pdf
-509eb035fb2bee0b47433e2a00960b50 *inst/doc/nested.R
+1b632f944f92a587b27789abdfe7aa37 *inst/doc/foreach.pdf
+16b970f6d8aa1957b41adf989c946426 *inst/doc/nested.R
 b58f77e7ee3b70d93050f5bb19502b5a *inst/doc/nested.Rnw
-b43ae3a52ffd513339ba2e20d2ff67cd *inst/doc/nested.pdf
+4ddca0b804fb85d1be150471474c2976 *inst/doc/nested.pdf
 3380c6bfe2789c1316d36c368d968bc1 *inst/examples/apply.R
 500fc0fa2cb4b07b809e974bc99ba4b9 *inst/examples/bigmax.R
 4549e5165479d323e9348b2d726de9da *inst/examples/bigmean.R
