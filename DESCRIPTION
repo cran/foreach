@@ -1,10 +1,10 @@
 Package: foreach
 Type: Package
 Title: Provides Foreach Looping Construct
-Version: 1.4.7
+Version: 1.4.8
 Authors@R: c(person("Hong", "Ooi", role="cre", email="hongooi@microsoft.com"),
              person("Microsoft", role=c("aut", "cph")),
-			 person("Steve", "Weston", role="aut"))
+             person("Steve", "Weston", role="aut"))
 Description: Support for the foreach looping construct.  Foreach is an
         idiom that allows for iterating over elements in a collection,
         without the use of an explicit loop counter.  This package in
@@ -13,16 +13,23 @@ Description: Support for the foreach looping construct.  Foreach is an
         standard lapply function, but doesn't require the evaluation
         of a function.  Using foreach without side effects also
         facilitates executing the loop in parallel.
+License: Apache License (== 2.0)
+URL: https://github.com/RevolutionAnalytics/foreach
+BugReports: https://github.com/RevolutionAnalytics/foreach/issues
 Depends: R (>= 2.5.0)
 Imports: codetools, utils, iterators
-Suggests: randomForest
-Enhances: compiler, doMC, RUnit, doParallel
-License: Apache License (== 2.0)
+Suggests: randomForest, doMC, doParallel, testthat, knitr, rmarkdown
+VignetteBuilder: knitr
+RoxygenNote: 7.0.2
+Collate: 'callCombine.R' 'foreach.R' 'do.R' 'foreach-ext.R'
+        'foreach-pkg.R' 'getDoPar.R' 'getDoSeq.R' 'getsyms.R' 'iter.R'
+        'nextElem.R' 'onLoad.R' 'setDoPar.R' 'setDoSeq.R' 'times.R'
+        'utils.R'
 NeedsCompilation: no
-Packaged: 2019-07-16 21:07:01 UTC; richcala
+Packaged: 2020-02-06 21:25:18 UTC; hongo
 Author: Hong Ooi [cre],
   Microsoft [aut, cph],
   Steve Weston [aut]
 Maintainer: Hong Ooi <hongooi@microsoft.com>
 Repository: CRAN
-Date/Publication: 2019-07-27 23:00:35 UTC
+Date/Publication: 2020-02-09 20:30:03 UTC
