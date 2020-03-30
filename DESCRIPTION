@@ -1,7 +1,7 @@
 Package: foreach
 Type: Package
 Title: Provides Foreach Looping Construct
-Version: 1.4.8
+Version: 1.5.0
 Authors@R: c(person("Hong", "Ooi", role="cre", email="hongooi@microsoft.com"),
              person("Microsoft", role=c("aut", "cph")),
              person("Steve", "Weston", role="aut"))
@@ -20,16 +20,16 @@ Depends: R (>= 2.5.0)
 Imports: codetools, utils, iterators
 Suggests: randomForest, doMC, doParallel, testthat, knitr, rmarkdown
 VignetteBuilder: knitr
-RoxygenNote: 7.0.2
+RoxygenNote: 7.0.2.9000
 Collate: 'callCombine.R' 'foreach.R' 'do.R' 'foreach-ext.R'
         'foreach-pkg.R' 'getDoPar.R' 'getDoSeq.R' 'getsyms.R' 'iter.R'
         'nextElem.R' 'onLoad.R' 'setDoPar.R' 'setDoSeq.R' 'times.R'
         'utils.R'
 NeedsCompilation: no
-Packaged: 2020-02-06 21:25:18 UTC; hongo
+Packaged: 2020-03-29 13:11:48 UTC; hongo
 Author: Hong Ooi [cre],
   Microsoft [aut, cph],
   Steve Weston [aut]
 Maintainer: Hong Ooi <hongooi@microsoft.com>
 Repository: CRAN
-Date/Publication: 2020-02-09 20:30:03 UTC
+Date/Publication: 2020-03-30 12:10:02 UTC

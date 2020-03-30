@@ -375,16 +375,16 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <p>What if the R expression returns a vector, and we want to combine those vectors into a matrix? One way to do that is with the <code>cbind</code> function:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>x &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class="dt">i=</span><span class="dv">1</span><span class="op">:</span><span class="dv">4</span>, <span class="dt">.combine=</span><span class="st">&#39;cbind&#39;</span>) <span class="op">%do%</span><span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">4</span>)</span>
 <span id="cb12-2"><a href="#cb12-2"></a>x</span></code></pre></div>
-<pre><code>##       result.1  result.2     result.3   result.4
-## [1,] -1.092978 0.6295170  1.833871978  2.0404157
-## [2,] -1.240119 1.2464664 -0.009688854  0.6820452
-## [3,]  2.462393 0.2607038 -0.610613021 -0.6065908
-## [4,] -1.115345 0.3595195  0.178409580  0.8715811</code></pre>
+<pre><code>##         result.1   result.2   result.3   result.4
+## [1,] -0.62253667 -0.4924160 -0.7938777 -0.6686094
+## [2,]  0.19718868  0.3966560  0.3984526 -1.4872595
+## [3,]  0.01408479 -0.3259028 -2.8852866  1.7116825
+## [4,]  0.94298446 -0.7735955  0.4909302 -0.1013731</code></pre>
 <p>This generates four vectors of four random numbers, and combines them by column to produce a 4 by 4 matrix.</p>
 <p>We can also use the <code>&quot;+&quot;</code> or <code>&quot;*&quot;</code> functions to combine our results:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>x &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class="dt">i=</span><span class="dv">1</span><span class="op">:</span><span class="dv">4</span>, <span class="dt">.combine=</span><span class="st">&#39;+&#39;</span>) <span class="op">%do%</span><span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">4</span>)</span>
 <span id="cb14-2"><a href="#cb14-2"></a>x</span></code></pre></div>
-<pre><code>## [1]  1.7216779 -1.6464609 -2.1349854 -0.3416262</code></pre>
+<pre><code>## [1]  1.3239610  0.5101160  0.2962533 -2.1871191</code></pre>
 <p>You can also specify a user-written function to combine the results. Here’s an example that throws away the results:</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>cfun &lt;-<span class="st"> </span><span class="cf">function</span>(a, b) <span class="ot">NULL</span></span>
 <span id="cb16-2"><a href="#cb16-2"></a>x &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class="dt">i=</span><span class="dv">1</span><span class="op">:</span><span class="dv">4</span>, <span class="dt">.combine=</span><span class="st">&#39;cfun&#39;</span>) <span class="op">%do%</span><span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">4</span>)</span>
@@ -420,11 +420,11 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="kw">library</span>(iterators)</span>
 <span id="cb27-2"><a href="#cb27-2"></a>x &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class="dt">a=</span><span class="kw">irnorm</span>(<span class="dv">4</span>, <span class="dt">count=</span><span class="dv">4</span>), <span class="dt">.combine=</span><span class="st">&#39;cbind&#39;</span>) <span class="op">%do%</span><span class="st"> </span>a</span>
 <span id="cb27-3"><a href="#cb27-3"></a>x</span></code></pre></div>
-<pre><code>##        result.1   result.2   result.3   result.4
-## [1,] -1.5350510  1.7874584  0.4996798 -0.1752564
-## [2,] -0.7261872 -0.8157457  0.3745338  0.4990661
-## [3,] -2.0773878  0.6599377 -0.6587684 -1.6518373
-## [4,] -0.2685922 -0.1270722 -0.8608408  2.9782248</code></pre>
+<pre><code>##        result.1    result.2     result.3   result.4
+## [1,]  0.6626762  2.57928026 -0.101057839 -0.4810713
+## [2,]  1.6289221 -0.86300622 -0.341122724  0.4319659
+## [3,] -0.1595150 -0.08652906  0.005044726 -0.1329178
+## [4,] -1.0244779 -0.74707961  0.154261348 -0.5719386</code></pre>
 <p>This becomes useful when dealing with large amounts of data. Iterators allow the data to be generated on-the-fly, as it is needed by your operations, rather than requiring all of the data to be generated at the beginning.</p>
 <p>For example, let’s say that we want to sum together a thousand random vectors:</p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="kw">set.seed</span>(<span class="dv">123</span>)</span>
