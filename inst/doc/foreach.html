@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <meta name="author" content="Steve Weston" />
 
@@ -97,7 +97,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -118,9 +118,6 @@ padding-right: 2em;
 font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 font-size: 14px;
 line-height: 1.35;
-}
-#header {
-text-align: center;
 }
 #TOC {
 clear: both;
@@ -289,8 +286,12 @@ code > span.st { color: #d14; }
 code > span.co { color: #888888; font-style: italic; } 
 code > span.ot { color: #007020; } 
 code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
+
+
+
 
 </head>
 
@@ -300,7 +301,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 
 <h1 class="title toc-ignore">Using the <code>foreach</code> package</h1>
-<h4 class="author"><em>Steve Weston</em></h4>
+<h4 class="author">Steve Weston</h4>
 
 
 
@@ -375,16 +376,16 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <p>What if the R expression returns a vector, and we want to combine those vectors into a matrix? One way to do that is with the <code>cbind</code> function:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>x &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class="dt">i=</span><span class="dv">1</span><span class="op">:</span><span class="dv">4</span>, <span class="dt">.combine=</span><span class="st">&#39;cbind&#39;</span>) <span class="op">%do%</span><span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">4</span>)</span>
 <span id="cb12-2"><a href="#cb12-2"></a>x</span></code></pre></div>
-<pre><code>##         result.1   result.2   result.3   result.4
-## [1,] -0.62253667 -0.4924160 -0.7938777 -0.6686094
-## [2,]  0.19718868  0.3966560  0.3984526 -1.4872595
-## [3,]  0.01408479 -0.3259028 -2.8852866  1.7116825
-## [4,]  0.94298446 -0.7735955  0.4909302 -0.1013731</code></pre>
+<pre><code>##        result.1    result.2   result.3    result.4
+## [1,] -0.8701295  0.70988297 -0.5598754 -0.08043917
+## [2,] -0.4626139 -0.67660527 -1.3031857 -1.45756572
+## [3,]  1.1025845 -0.08722428 -1.3029906 -0.24109901
+## [4,] -0.3041361  0.94661877 -0.5842578 -1.11383326</code></pre>
 <p>This generates four vectors of four random numbers, and combines them by column to produce a 4 by 4 matrix.</p>
 <p>We can also use the <code>&quot;+&quot;</code> or <code>&quot;*&quot;</code> functions to combine our results:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>x &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class="dt">i=</span><span class="dv">1</span><span class="op">:</span><span class="dv">4</span>, <span class="dt">.combine=</span><span class="st">&#39;+&#39;</span>) <span class="op">%do%</span><span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">4</span>)</span>
 <span id="cb14-2"><a href="#cb14-2"></a>x</span></code></pre></div>
-<pre><code>## [1]  1.3239610  0.5101160  0.2962533 -2.1871191</code></pre>
+<pre><code>## [1]  0.2352222  0.6813665 -3.7098886  0.7658021</code></pre>
 <p>You can also specify a user-written function to combine the results. Here’s an example that throws away the results:</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>cfun &lt;-<span class="st"> </span><span class="cf">function</span>(a, b) <span class="ot">NULL</span></span>
 <span id="cb16-2"><a href="#cb16-2"></a>x &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class="dt">i=</span><span class="dv">1</span><span class="op">:</span><span class="dv">4</span>, <span class="dt">.combine=</span><span class="st">&#39;cfun&#39;</span>) <span class="op">%do%</span><span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">4</span>)</span>
@@ -420,11 +421,11 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="kw">library</span>(iterators)</span>
 <span id="cb27-2"><a href="#cb27-2"></a>x &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class="dt">a=</span><span class="kw">irnorm</span>(<span class="dv">4</span>, <span class="dt">count=</span><span class="dv">4</span>), <span class="dt">.combine=</span><span class="st">&#39;cbind&#39;</span>) <span class="op">%do%</span><span class="st"> </span>a</span>
 <span id="cb27-3"><a href="#cb27-3"></a>x</span></code></pre></div>
-<pre><code>##        result.1    result.2     result.3   result.4
-## [1,]  0.6626762  2.57928026 -0.101057839 -0.4810713
-## [2,]  1.6289221 -0.86300622 -0.341122724  0.4319659
-## [3,] -0.1595150 -0.08652906  0.005044726 -0.1329178
-## [4,] -1.0244779 -0.74707961  0.154261348 -0.5719386</code></pre>
+<pre><code>##        result.1    result.2   result.3   result.4
+## [1,]  0.4693154 -1.34611237  0.2365691  2.7260217
+## [2,]  0.1864013  0.40618089 -0.5481581 -0.5613511
+## [3,] -1.0130826  0.05245615  0.3263917  0.7168364
+## [4,] -0.2743118  0.37121188  0.6028109  0.1781484</code></pre>
 <p>This becomes useful when dealing with large amounts of data. Iterators allow the data to be generated on-the-fly, as it is needed by your operations, rather than requiring all of the data to be generated at the beginning.</p>
 <p>For example, let’s say that we want to sum together a thousand random vectors:</p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="kw">set.seed</span>(<span class="dv">123</span>)</span>
@@ -611,6 +612,9 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <p>Much of parallel computing comes to doing three things: splitting the problem into pieces, executing the pieces in parallel, and combining the results back together. Using the <code>foreach</code> package, the iterators help you to split the problem into pieces, the <code>%dopar%</code> function executes the pieces in parallel, and the specified <code>.combine</code> function puts the results back together. We’ve demonstrated how simple things can be done in parallel quite easily using the <code>foreach</code> package, and given some ideas about how more complex problems can be solved. But it’s a fairly new package, and we will continue to work on ways of making it a more powerful system for doing parallel computing.</p>
 </div>
 
+
+
+<!-- code folding -->
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

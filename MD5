@@ -1,6 +1,6 @@
-517da1acb44454cd841e731fb092b984 *DESCRIPTION
+b9102190a1476732edca310e1aa1f0cc *DESCRIPTION
 a2ce4bf187f979797e5bb32fdf20620e *NAMESPACE
-66914af77a768cf142e9af9a736c6b7b *NEWS.md
+52d789210a066cd19358953b108d7b5f *NEWS.md
 ecf3cabd0b12c9cb4a6fcdbe4fc90675 *R/callCombine.R
 c08b411808259893b91f32a5e8fae14a *R/do.R
 fa45910a2c08388f217c019d6850bc66 *R/foreach-ext.R
@@ -17,15 +17,15 @@ d9169823a141c7f17fd509d27da27232 *R/setDoPar.R
 3cebd8886b3c27482bb165aa289bc21f *R/times.R
 0cb9bccef92ff9e9d9de97247305dda2 *R/utils.R
 413ea1c143095e1cb0e2ca4348e1b207 *README.md
-355f0546524dd7cde7818163c1ba0343 *build/vignette.rds
+8c0f5ce33c58682364d72aa9f7770ee6 *build/vignette.rds
 c579ade425b18a72c31a5b8ebfa0babd *demo/00Index
 17a85db43805f123aa75798659de8741 *demo/sincSEQ.R
 cdb007b54c7a8c30c6a3c0a5d47ec511 *inst/doc/foreach.R
 bb9adb7b804cf67cdd268e4996711e59 *inst/doc/foreach.Rmd
-5c34fe3c50d0214243fd660bcc09e9ff *inst/doc/foreach.html
+ac36fce1019d7e613feb21e17846effe *inst/doc/foreach.html
 76e657bf2a5439cdc6c8649872033005 *inst/doc/nested.R
 533ad19d28eb363bbab44edeaa9591a7 *inst/doc/nested.Rmd
-0ddda26747ff79706a1689ac7b16a76d *inst/doc/nested.html
+3e26ee3d80a6b56928692c215adf3e29 *inst/doc/nested.html
 99787f027fd9c86157496490f2d5b194 *inst/examples/apply.R
 691db78db867ff8ff7eb78de3241ee8f *inst/examples/bigmax.R
 8f20162e5c6bee3f1743368faa542f95 *inst/examples/bigmean.R

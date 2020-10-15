@@ -1,8 +1,8 @@
 Package: foreach
 Type: Package
 Title: Provides Foreach Looping Construct
-Version: 1.5.0
-Authors@R: c(person("Hong", "Ooi", role="cre", email="hongooi@microsoft.com"),
+Version: 1.5.1
+Authors@R: c(person("Michelle", "Wallig", role="cre", email="Michelle.Wallig@microsoft.com"),
              person("Microsoft", role=c("aut", "cph")),
              person("Steve", "Weston", role="aut"))
 Description: Support for the foreach looping construct.  Foreach is an
@@ -26,10 +26,10 @@ Collate: 'callCombine.R' 'foreach.R' 'do.R' 'foreach-ext.R'
         'nextElem.R' 'onLoad.R' 'setDoPar.R' 'setDoSeq.R' 'times.R'
         'utils.R'
 NeedsCompilation: no
-Packaged: 2020-03-29 13:11:48 UTC; hongo
-Author: Hong Ooi [cre],
+Packaged: 2020-10-12 16:22:02 UTC; hongo
+Author: Michelle Wallig [cre],
   Microsoft [aut, cph],
   Steve Weston [aut]
-Maintainer: Hong Ooi <hongooi@microsoft.com>
+Maintainer: Michelle Wallig <Michelle.Wallig@microsoft.com>
 Repository: CRAN
-Date/Publication: 2020-03-30 12:10:02 UTC
+Date/Publication: 2020-10-15 05:00:13 UTC
