@@ -1,8 +1,10 @@
 Package: foreach
 Type: Package
 Title: Provides Foreach Looping Construct
-Version: 1.5.1
-Authors@R: c(person("Michelle", "Wallig", role="cre", email="Michelle.Wallig@microsoft.com"),
+Version: 1.5.2
+Authors@R: c(person("Folashade", "Daniel", role="cre", email="fdaniel@microsoft.com"),
+             person("Hong", "Ooi", role="ctb"),
+             person("Rich", "Calaway", role="ctb"),
              person("Microsoft", role=c("aut", "cph")),
              person("Steve", "Weston", role="aut"))
 Description: Support for the foreach looping construct.  Foreach is an
@@ -20,16 +22,18 @@ Depends: R (>= 2.5.0)
 Imports: codetools, utils, iterators
 Suggests: randomForest, doMC, doParallel, testthat, knitr, rmarkdown
 VignetteBuilder: knitr
-RoxygenNote: 7.0.2.9000
+RoxygenNote: 7.1.1
 Collate: 'callCombine.R' 'foreach.R' 'do.R' 'foreach-ext.R'
         'foreach-pkg.R' 'getDoPar.R' 'getDoSeq.R' 'getsyms.R' 'iter.R'
         'nextElem.R' 'onLoad.R' 'setDoPar.R' 'setDoSeq.R' 'times.R'
         'utils.R'
 NeedsCompilation: no
-Packaged: 2020-10-12 16:22:02 UTC; hongo
-Author: Michelle Wallig [cre],
+Packaged: 2022-01-11 04:21:12 UTC; fdaniel
+Author: Folashade Daniel [cre],
+  Hong Ooi [ctb],
+  Rich Calaway [ctb],
   Microsoft [aut, cph],
   Steve Weston [aut]
-Maintainer: Michelle Wallig <Michelle.Wallig@microsoft.com>
+Maintainer: Folashade Daniel <fdaniel@microsoft.com>
 Repository: CRAN
-Date/Publication: 2020-10-15 05:00:13 UTC
+Date/Publication: 2022-02-02 09:20:02 UTC
